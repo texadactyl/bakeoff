@@ -22,43 +22,8 @@ CPU: 4700U octa-core, Max speed: 4.10 GHz
 O/S: Ubuntu 24.04.3 LTS
 <br>
 Kernel: 6.8.0-40-generic
-```
-=============== C ============================
-Number of rounds: 3000000000
-Elapsed time (s): 3.637
-3.14159265
-
-=============== D (ldc2) =====================
-Number of rounds: 3000000000
-Elapsed time (s): 3.640
-3.14159265
-
-=============== zig ==========================
-Number of rounds: 3000000000
-Elapsed time (s): 3.638
-3.14159265
-
-=============== Go ===========================
-Number of rounds: 3000000000
-Elapsed time (s): 3.639
-3.14159265
-
-=============== Java Compile ================================================
-=============== Hotspot -server =============================================
-Number of rounds: 3000000000
-Elapsed time (s): 8.005
-3.14159265
-
-=============== Hotspot -server -XX:+TieredCompilation ======================
-Number of rounds: 3000000000
-Elapsed time (s): 8.001
-3.14159265
-
-=============== Jacobin ======================
-Number of rounds: 3000000000
-Elapsed time (s): 7.996
-3.14159265
-```
+<br><br>
+See file `run.log`.
 
 ### Afterthoughts
 
