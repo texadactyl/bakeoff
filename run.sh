@@ -3,6 +3,8 @@ set -e
 unset JAVA_TOOL_OPTIONS
 
 exec > >(tee "$LOGFILE") 2>&1
+date
+echo
 echo =============== C ============================
 gcc --version | head -n 1
 gcc -O3 -march=native -mtune=native -ffast-math main.c
