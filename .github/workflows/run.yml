@@ -1,0 +1,127 @@
+name: Run bakeoff on all O/Ses
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
+          - windows-latest
+          - windows-11-arm
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # ----------------------------
+      # Checkout
+      # ----------------------------
+      - uses: actions/checkout@v4
+
+      # ----------------------------
+      # Install GCC (Windows only)
+      # ----------------------------
+      - name: Install GCC (MinGW) on Windows
+        if: startsWith(matrix.os, 'windows')
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-binutils
+
+      - name: Add MinGW to PATH (Windows)
+        if: startsWith(matrix.os, 'windows')
+        shell: bash
+        run: |
+          echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
+
+      # ----------------------------
+      # Install D compiler (ldc2)
+      # ----------------------------
+      - name: Set up D (ldc2)
+        uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: ldc-latest
+
+      # ----------------------------
+      # Install Zig
+      # ----------------------------
+      - name: Set up Zig
+        uses: goto-bus-stop/setup-zig@v2
+        with:
+          version: latest
+
+      # ----------------------------
+      # Install Go
+      # ----------------------------
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22
+
+      # ----------------------------
+      # Setup Java per runner
+      # ----------------------------
+      # All except Windows ARM64
+      - name: Setup JDK, not Windows ARM64
+        if: matrix.os != 'windows-11-arm'
+        uses: actions/setup-java@main
+        with:
+          distribution: 'oracle'
+          java-version: '21'
+
+      # Windows ARM64
+      - name: Set up JDK on Windows ARM64
+        if: matrix.os == 'windows-11-arm'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          architecture: 'arm64'
+
+      # ----------------------------
+      # Verify toolchains
+      # ----------------------------
+      - name: Verify Compilers
+        shell: bash
+        run: |
+          echo "=== Compilers ==="
+          echo "OS: $RUNNER_OS"
+          echo "Arch: $(uname -m)"
+          echo "GCC:"
+          gcc --version | head -n 1 || echo "gcc not available"
+          echo "LDC2:"
+          ldc2 --version | head -n 1
+          echo "Zig:"
+          zig version
+          echo "Go:"
+          go version
+          echo "Java:"
+          java -version 2>&1 | head -n 1
+
+      # ----------------------------
+      # Run bash script: ga.sh
+      # Generate: ga.log
+      # ----------------------------
+      - name: Run deterministic cross-language build
+        shell: bash
+        run: |
+          chmod +x ./ga.sh
+          LOGFILE=ga.log ./ga.sh
+
+      # ----------------------------
+      # Upload normalized log
+      # ----------------------------
+      - name: Upload CI log
+        uses: actions/upload-artifact@v3
+        with:
+          name: ga-log
+          path: ga.log
