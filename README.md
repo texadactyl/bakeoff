@@ -13,6 +13,11 @@ Leibniz Algorithm for Pi on Multiple Language Platforms
  Bash script: run.sh
 
 ### Sample Log (run.log)
+Machine: Acer Aspire 5 A515-44-R2SA with 16 GB RAM.
+Mfg date: 2020-06-23
+CPU: 4700U octa-core, Max speed: 4.10 GHz
+O/S: Ubuntu 24.04.3 LTS
+Kernel: Ubuntu 24.04.3 LTS
 ```
 =============== C ============================
 Number of rounds: 3000000000
