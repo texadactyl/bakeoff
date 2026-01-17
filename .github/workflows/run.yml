@@ -57,7 +57,7 @@ jobs:
       - name: Set up Zig
         uses: goto-bus-stop/setup-zig@v2
         with:
-          version: 0.15.2
+          version: 0.13.0
 
       # ----------------------------
       # Install Go
@@ -65,7 +65,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.22
+          go-version: 1.24
 
       # ----------------------------
       # Setup Java per runner
