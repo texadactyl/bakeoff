@@ -21,7 +21,7 @@ CPU: 4700U octa-core, Max speed: 4.10 GHz
 <br>
 O/S: Ubuntu 24.04.3 LTS
 <br>
-Kernel: Ubuntu 24.04.3 LTS
+Kernel: 6.8.0-40-generic
 ```
 =============== C ============================
 Number of rounds: 3000000000
