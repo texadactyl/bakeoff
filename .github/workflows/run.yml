@@ -57,7 +57,7 @@ jobs:
       - name: Set up Zig
         uses: goto-bus-stop/setup-zig@v2
         with:
-          version: latest
+          version: 0.15.2
 
       # ----------------------------
       # Install Go
