@@ -2,7 +2,6 @@ use std::time::Instant;
 
 fn main() {
     let rounds: i64 = 3_000_000_000;
-    println!("Number of rounds: {}", rounds);
     
     let mut sum: f64;  // ← No = 0.0 here
     let mut flip: f64 = -1.0;
@@ -32,7 +31,5 @@ fn main() {
     
     // Report.
     let elapsed_secs = elapsed.as_secs_f64();
-    println!("Elapsed time (s): {:.3}", elapsed_secs);
-    println!("Pi observed: {:.16}", pi);
-    println!("Pi expected: 3.1415926535897932");
+    println!("Rust,{},{:.3},{:.16}", rounds, elapsed_secs, pi);
 }

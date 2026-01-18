@@ -1,8 +1,6 @@
 public class main {
     public static void main(String[] args) {
         long rounds = 3_000_000_000L;
-        System.out.printf("Number of rounds: %d\n", rounds);
-
         double sum = 0.0;
         double flip = -1.0;
         long tStart, tStop;
@@ -28,9 +26,7 @@ public class main {
 
         // Report.
         double tDeltaSecs = (tStop - tStart) / 1e9;
-        System.out.printf("Elapsed time (s): %.3f%n", tDeltaSecs);
-        System.out.printf("Pi observed: %.16f\n", pi);
-        System.out.printf("Pi expected: 3.1415926535897932\n");
+        System.out.printf("Java,%d,%.3f,%.16f\n", rounds, tDeltaSecs, pi); 
     }
 }
 

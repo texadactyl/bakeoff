@@ -3,8 +3,7 @@
 
 int main() {
     long long rounds = 3000000000LL;
-    printf("Number of rounds: %lld\n", rounds);
-    
+     
     double sum = 0.0;
     double flip = -1.0;
     double pi;
@@ -31,9 +30,8 @@ int main() {
     // Report.
     double tDeltaSecs = (tStop.tv_sec - tStart.tv_sec) + 
                         (tStop.tv_nsec - tStart.tv_nsec) / 1e9;    
-    printf("Elapsed time (s): %.3f\n", tDeltaSecs);
-    printf("Pi observed: %.16f\n", pi);
-    printf("Pi expected: 3.1415926535897932\n");
+    
+    printf("C,%lld,%.3f,%.16f\n", rounds, tDeltaSecs, pi); 
     
     return 0;
 }

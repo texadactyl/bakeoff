@@ -5,6 +5,8 @@ unset JAVA_TOOL_OPTIONS
 
 LOGFILE=ga.log
 exec > >(tee "$LOGFILE") 2>&1
+CSVFILE=ga.csv
+echo "lang,nloops,elapsed-secs,computed-pi" > $CSVFILE
 
 timestamp() {
     date -u +"%Y-%m-%dT%H:%M:%SZ"
@@ -69,7 +71,7 @@ kv "Compiler" "$(gcc -dumpmachine)"
 kv "Version"  "$(gcc --version | head -n 1)"
 
 gcc $COMMON_CFLAGS $C_CPU main.c -o c.out
-./c.out
+./c.out >> $CSVFILE
 
 # ============================
 # D (LDC2)
@@ -80,7 +82,7 @@ kv "Compiler" "ldc2"
 kv "Version"  "$(ldc2 --version 2>&1 | grep -m1 'LDC' | tr '\n' ' ')"
 
 ldc2 $COMMON_DFLAGS $D_CPU main.d -of=d.out
-./d.out
+./d.out >> $CSVFILE
 
 # ============================
 # Zig
@@ -95,7 +97,7 @@ zig build-exe main.zig \
     $ZIG_CPU \
     -femit-bin=zig.out
 
-./zig.out
+./zig.out >> $CSVFILE
 
 # ============================
 # Go
@@ -106,7 +108,7 @@ kv "Compiler" "go"
 kv "Version"  "$(go version)"
 
 go build -trimpath -ldflags="-s -w" -o go.out main.go
-./go.out
+./go.out >> $CSVFILE
 
 # ============================
 # Rust
@@ -117,7 +119,7 @@ kv "Compiler" "rustc"
 kv "Version"  "$(rustc --version)"
 
 rustc -C opt-level=3 -o rs.out main.rs
-./rs.out
+./rs.out >> $CSVFILE
 
 # ============================
 # Java
@@ -127,12 +129,9 @@ section "Java Compile"
 kv "javac" "$(javac --version)"
 javac -Xlint -Werror main.java
 
-section "HotSpot -server"
+section "HotSpot JVM"
 kv "java" "$(java --version | head -n 1)"
-java -server main
-
-section "HotSpot -server -XX:+TieredCompilation"
-java -server -XX:+TieredCompilation main
+java -server main >> $CSVFILE
 
 section "DONE"
 timestamp

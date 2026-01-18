@@ -1,2 +1,2 @@
 
-rm *.o *.out *.log *.class
+rm *.o *.out *.log *.class *.csv

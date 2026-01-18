@@ -96,16 +96,16 @@ jobs:
 
       # ----------------------------
       # Run bash script: ga.sh
-      # Generate: ga.log
+      # Generate: ga.log and ga.csv
       # ----------------------------
-      - name: Run deterministic cross-language build
+      - name: Compile and Execute
         shell: bash
         run: |
           chmod +x ./ga.sh
           ./ga.sh
 
       # ----------------------------
-      # Upload normalized log
+      # Upload log
       # ----------------------------
       - name: Upload GA log
         uses: actions/upload-artifact@v4
@@ -113,3 +113,15 @@ jobs:
           name: ga-log-${{ matrix.os }}
           path: ./ga.log
           retention-days: 3
+
+      # ----------------------------
+      # Upload CSV file
+      # ----------------------------
+      - name: Upload GA CSV
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga-csv-${{ matrix.os }}
+          path: ./ga.csv
+          retention-days: 3
+ 
+ 

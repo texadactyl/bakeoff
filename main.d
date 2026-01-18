@@ -3,7 +3,6 @@ import std.datetime.stopwatch;
 
 void main() {
     long rounds = 3_000_000_000;
-    writefln("Number of rounds: %d", rounds);
     
     double sum = 0.0;
     double flip = -1.0;
@@ -31,8 +30,6 @@ void main() {
     
     // Report.
     double tDeltaSecs = sw.peek().total!"nsecs" / 1e9;
-    writefln("Elapsed time (s): %.3f", tDeltaSecs);
-    writefln("Pi observed: %.16f", pi);
-    writefln("Pi expected: 3.1415926535897932");
+    writefln("D,%d,%.3f,%.16f", rounds, tDeltaSecs, pi);
 
 }

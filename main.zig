@@ -7,8 +7,6 @@ pub fn main() !void {
     var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
     const stdout = &stdout_writer.interface;
     
-    try stdout.print("Number of rounds: {d}\n", .{rounds});
-    
     var sum: f64 = 0.0;
     var flip: f64 = -1.0;
     var pi: f64 = undefined;
@@ -37,8 +35,6 @@ pub fn main() !void {
     
     // Report.
     const elapsed_secs = @as(f64, @floatFromInt(elapsed_ns)) / 1e9;
-    try stdout.print("Elapsed time (s): {d:.3}\n", .{elapsed_secs});
-    try stdout.print("Pi observed: {d:.16}\n", .{pi});
-    try stdout.print("Pi expected: 3.1415926535897932\n", .{});
+    try stdout.print("Zig,{d},{d:.3},{d:.16}\n", .{rounds, elapsed_secs, pi});
     try stdout.flush();
 }

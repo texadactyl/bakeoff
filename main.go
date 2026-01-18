@@ -7,7 +7,6 @@ import (
 
 func main() {
 	rounds := int64(3_000_000_000)
-    fmt.Printf("Number of rounds: %d\n", rounds);
 
 	sum := 0.0
 	flip := -1.0
@@ -35,8 +34,6 @@ func main() {
     
     // Report.
     tDeltaSecs := (float64) ((tStop.UnixMilli() - tStart.UnixMilli())) / 1000.0
-    fmt.Printf("Elapsed time (s): %.3f\n", tDeltaSecs)
-	fmt.Printf("%.16f\n", pi)
-	fmt.Printf("Pi expected: 3.1415926535897932\n");
+	fmt.Printf("Go,%d,%.3f,%.16f\n", rounds, tDeltaSecs, pi); 
 
 }
