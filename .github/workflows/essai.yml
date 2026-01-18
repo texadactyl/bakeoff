@@ -34,4 +34,5 @@ jobs:
       - name: Run a bash command
         shell: bash
         run: |
-           uname -m
+           ARCH="${RUNNER_ARCH:-$(uname -m)}"
+           echo $ARCH
