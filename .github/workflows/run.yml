@@ -119,14 +119,14 @@ jobs:
         shell: bash
         run: |
           chmod +x ./ga.sh
-          LOGFILE=ga.log ./ga.sh
+          LOGFILE=./ga.log ./ga.sh
 
       # ----------------------------
       # Upload normalized log
       # ----------------------------
-      - name: Upload CI log
+      - name: Upload GA log
         uses: actions/upload-artifact@v4
         with:
           name: ga-log-${{ matrix.os }}
-          path: ga.log
+          path: ./ga.log
           retention-days: 3
