@@ -31,22 +31,28 @@ ARCH=$(uname -m)
 # ----------------------------
 # Architecture-specific flags
 # ----------------------------
-echo "DEBUG: uname -m returned: '$ARCH'"
+# Use GitHub Actions RUNNER_ARCH if available, fallback to uname
+ARCH="${RUNNER_ARCH:-$(uname -m)}"
+
+# Normalize to lowercase for consistent matching
+ARCH=$(echo "$ARCH" | tr '[:upper:]' '[:lower:]')
+
 case "$ARCH" in
-    x86_64|amd64)
+    x64|x86_64|amd64)
         C_CPU="-march=x86-64 -mtune=generic"
         D_CPU="-mcpu=generic"
         ZIG_CPU="-mcpu=x86_64"
         ;;
-    aarch64|arm64)
+    arm64|aarch64)
         C_CPU="-march=armv8-a"
         D_CPU="-mcpu=generic"
-        ZIG_CPU="-mcpu=generic"  # ← This is correct
+        ZIG_CPU="-mcpu=generic"
         ;;
     *)
+        echo "WARNING: Unknown architecture '$ARCH', using baseline"
         C_CPU=""
         D_CPU=""
-        ZIG_CPU="-mcpu=baseline"  # ← Add this as fallback
+        ZIG_CPU="-mcpu=baseline"
         ;;
 esac
 
