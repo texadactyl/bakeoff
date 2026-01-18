@@ -2,8 +2,8 @@
 Leibniz Algorithm for Pi on Multiple Language Platforms
 <br>Inspired by https://github.com/niklas-heer/speed-comparison
 <br>References: 
-* https://en.wikipedia.org/wiki/Pi
-* https://www.piday.org/million/
+* https://en.wikipedia.org/wiki/Pi  (overview of Pi)
+* https://www.piday.org/million/  (1 Million Digits of Pi)
 
 ### Recipe to Get Up and Running
 * Install gcc.
