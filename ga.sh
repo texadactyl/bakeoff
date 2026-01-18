@@ -3,7 +3,7 @@
 set -euo pipefail
 unset JAVA_TOOL_OPTIONS
 
-LOGFILE=run.log
+LOGFILE=ga.log
 exec > >(tee "$LOGFILE") 2>&1
 
 timestamp() {
