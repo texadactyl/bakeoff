@@ -103,7 +103,7 @@ jobs:
           echo "GCC:"
           gcc --version | head -n 1 || echo "gcc not available"
           echo "LDC2:"
-          ldc2 --version | head -n 1
+          ldc2 --version 2>&1 | grep -m1 "LDC" || echo "ldc2 not available"
           echo "Zig:"
           zig version
           echo "Go:"
