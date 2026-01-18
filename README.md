@@ -1,6 +1,9 @@
 # bakeoff
 Leibniz Algorithm for Pi on Multiple Language Platforms
 <br>Inspired by https://github.com/niklas-heer/speed-comparison
+<br>References: 
+* https://en.wikipedia.org/wiki/Pi  (overview of Pi)
+* https://www.piday.org/million/  (1 Million Digits of Pi)
 
 ### Recipe to Get Up and Running
 * Install gcc.
@@ -10,21 +13,17 @@ Leibniz Algorithm for Pi on Multiple Language Platforms
 * Install Java version 21.
 * Install Jacobin.
 
- ### Execution
- Bash script: run.sh
+ ### Off-line Execution
+ Bash script: `run.sh`
+ <br>
+ Logging output: `run.log`
+ <br>
+ CSV file output shared by all languages: `run.csv`
 
-### Sample Log (run.log)
-Machine: Acer Aspire 5 A515-44-R2SA with 16 GB RAM.
+### Github Actions Execution
+Github Actions workfile: `.github/workflows/run.yml`
 <br>
-Mfg date: 2020-06-23
-<br>
-CPU: 4700U octa-core, Max speed: 4.10 GHz
-<br>
-O/S: Ubuntu 24.04.3 LTS
-<br>
-Kernel: 6.8.0-40-generic
-<br><br>
-See file `run.log`.
+Bash script invoked by the workfile: `ga.sh`
 
 ### Afterthoughts
 
