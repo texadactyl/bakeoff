@@ -1,4 +1,4 @@
-name: Run bakeoff on all O/Ses
+name: Run bakeoff on MacOS and Ubuntu
 
 on:
   workflow_dispatch:
