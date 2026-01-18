@@ -1,4 +1,4 @@
-name: Run bakeoff on MacOS and Ubuntu
+name: Run bakeoff on MacOS, Ubuntu, and Windows
 
 on:
   workflow_dispatch:
