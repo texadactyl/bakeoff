@@ -31,6 +31,7 @@ ARCH=$(uname -m)
 # ----------------------------
 # Architecture-specific flags
 # ----------------------------
+echo "DEBUG: uname -m returned: '$ARCH'"
 case "$ARCH" in
     x86_64|amd64)
         C_CPU="-march=x86-64 -mtune=generic"
