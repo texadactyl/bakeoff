@@ -19,6 +19,15 @@ jobs:
       # ----------------------------
       - uses: actions/checkout@v4
 
+      # ---------------------------------------
+      # Disable Windows Defender (Windows only)
+      # ---------------------------------------
+      - name: Disable Windows Defender
+        if: startsWith(matrix.os, 'windows')
+        shell: powershell
+        run: |
+           Set-MpPreference -DisableRealtimeMonitoring $true
+           
       # ----------------------------
       # Install D compiler (ldc2)
       # ----------------------------
