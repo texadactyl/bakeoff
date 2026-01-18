@@ -9,15 +9,14 @@ fn main() {
     let pi: f64;
     
     // Prime the caches.
-    #[allow(unused_assignments)]
-    {
-        for ix in 1..=3 {
-            flip *= -1.0;
-            sum += flip / (ix + ix - 1) as f64;
-        }
-        sum = 0.0;
-        flip = -1.0;
+    for ix in 1..=3 {
+        flip *= -1.0;
+        sum += flip / (ix + ix - 1) as f64;
     }
+    let _watermelon = sum;
+    let _cantaloupe = flip;
+    sum = 0.0;
+    flip = -1.0;
     
     // Timed test.
     let start = Instant::now();
