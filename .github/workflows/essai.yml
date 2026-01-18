@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         #os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest, windows-11-arm, windows-latest]
         os: [windows-11-arm]
@@ -31,7 +31,7 @@ jobs:
       # ---------------------------------------
       # bash commands
       # ---------------------------------------
-       - name: uname
-         shell: bash
-         run: |
+      - name: Run a bash command
+        shell: bash
+        run: |
            uname -m
