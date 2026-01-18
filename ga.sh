@@ -136,3 +136,9 @@ java -server main >> $CSVFILE
 section "DONE"
 timestamp
 
+# ============================
+# Show CSV
+# ============================
+section "Show CSV"
+echo
+cat $CSVFILE
