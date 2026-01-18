@@ -52,6 +52,7 @@ jobs:
         uses: goto-bus-stop/setup-zig@v2
         with:
           version: 0.13.0
+          cache: false
 
       # ----------------------------
       # Install Go
@@ -60,6 +61,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.24
+          cache: false
  
       # ----------------------------
       # Setup Java per runner
