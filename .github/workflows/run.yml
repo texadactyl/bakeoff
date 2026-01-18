@@ -119,7 +119,7 @@ jobs:
         shell: bash
         run: |
           chmod +x ./ga.sh
-          LOGFILE=./ga.log ./ga.sh
+          ./ga.sh
 
       # ----------------------------
       # Upload normalized log
