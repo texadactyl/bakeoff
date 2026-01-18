@@ -40,12 +40,12 @@ case "$ARCH" in
     aarch64|arm64)
         C_CPU="-march=armv8-a"
         D_CPU="-mcpu=generic"
-        ZIG_CPU="-mcpu=generic"
+        ZIG_CPU="-mcpu=generic"  # ← This is correct
         ;;
     *)
         C_CPU=""
         D_CPU=""
-        ZIG_CPU=""
+        ZIG_CPU="-mcpu=baseline"  # ← Add this as fallback
         ;;
 esac
 
