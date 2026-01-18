@@ -1,0 +1,37 @@
+name: essai
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        #os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest, windows-11-arm, windows-latest]
+        os: [windows-11-arm]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # ----------------------------
+      # Checkout
+      # ----------------------------
+      - uses: actions/checkout@v4
+
+      # ---------------------------------------
+      # Disable Windows Defender (Windows only)
+      # ---------------------------------------
+      - name: Disable Windows Defender (Windows only)
+        if: startsWith(matrix.os, 'windows')
+        shell: powershell
+        run: |
+          Set-MpPreference -DisableRealtimeMonitoring $true
+
+      # ---------------------------------------
+      # bash commands
+      # ---------------------------------------
+       - name: uname
+         shell: bash
+         run: |
+           uname -m
