@@ -49,9 +49,9 @@ jobs:
       # ----------------------------
       - name: Setup JDK
         uses: actions/setup-java@v4
-       env:
+        env:
           NODE_NO_WARNINGS: 1
-       with:
+        with:
           distribution: 'oracle'
           java-version: '21'
 
