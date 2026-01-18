@@ -77,7 +77,7 @@ gcc $COMMON_CFLAGS $C_CPU main.c -o c.out
 section "D (ldc2)"
 
 kv "Compiler" "ldc2"
-kv "Version"  "$(ldc2 --version | head -n 1 | tr '\n' ' ')"
+kv "Version"  "$(ldc2 --version 2>&1 | grep -m1 'LDC' | tr '\n' ' ')"
 
 ldc2 $COMMON_DFLAGS $D_CPU main.d -of=d.out
 ./d.out
