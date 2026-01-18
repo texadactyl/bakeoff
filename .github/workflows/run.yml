@@ -94,34 +94,34 @@ jobs:
           echo "Java:"
           java -version 2>&1 | head -n 1
 
-      # ----------------------------
-      # Run bash script: ga.sh
-      # Generate: ga.log and ga.csv
-      # ----------------------------
+      # -----------------------------
+      # Run bash script: run.sh
+      # Generate: run.log and run.csv
+      # -----------------------------
       - name: Compile and Execute
         shell: bash
         run: |
-          chmod +x ./ga.sh
-          ./ga.sh
+          chmod +x ./run.sh
+          ./run.sh
 
       # ----------------------------
       # Upload log
       # ----------------------------
-      - name: Upload GA log
+      - name: Upload log
         uses: actions/upload-artifact@v4
         with:
-          name: ga-log-${{ matrix.os }}
-          path: ./ga.log
+          name: run-log-${{ matrix.os }}
+          path: ./run.log
           retention-days: 3
 
       # ----------------------------
       # Upload CSV file
       # ----------------------------
-      - name: Upload GA CSV
+      - name: Upload CSV file
         uses: actions/upload-artifact@v4
         with:
-          name: ga-csv-${{ matrix.os }}
-          path: ./ga.csv
+          name: run-csv-${{ matrix.os }}
+          path: ./run.csv
           retention-days: 3
  
  
