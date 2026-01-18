@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         #os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest, windows-11-arm, windows-latest]
-        os: [ubuntu-latest]
+        os: [windows-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -119,5 +119,6 @@ jobs:
       - name: Upload CI log
         uses: actions/upload-artifact@v4
         with:
-          name: ga-log
+          name: ga-log-${{ matrix.os }}
           path: ga.log
+          retention-days: 3
