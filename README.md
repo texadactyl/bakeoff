@@ -23,7 +23,7 @@ Leibniz Algorithm for Pi on Multiple Language Platforms
 ### Github Actions Execution
 Github Actions workfile: `.github/workflows/run.yml`
 <br>
-Bash script invoked by the workfile: `ga.sh`
+Bash script invoked by the workfile: `run.sh`
 
 ### Afterthoughts
 
