@@ -3,7 +3,9 @@ const std = @import("std");
 pub fn main() !void {
     const rounds: i64 = 3_000_000_000;
     
-    const stdout = std.io.getStdOut().writer();
+    var stdout_buffer: [1024]u8 = undefined;
+    var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+    const stdout = &stdout_writer.interface;
     
     try stdout.print("Number of rounds: {d}\n", .{rounds});
     
@@ -36,5 +38,7 @@ pub fn main() !void {
     // Report.
     const elapsed_secs = @as(f64, @floatFromInt(elapsed_ns)) / 1e9;
     try stdout.print("Elapsed time (s): {d:.3}\n", .{elapsed_secs});
-    try stdout.print("{d:.8}\n", .{pi});
+    try stdout.print("Pi observed: {d:.16}\n", .{pi});
+    try stdout.print("Pi expected: 3.1415926535897932\n", .{});
+    try stdout.flush();
 }

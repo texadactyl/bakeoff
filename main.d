@@ -32,5 +32,7 @@ void main() {
     // Report.
     double tDeltaSecs = sw.peek().total!"nsecs" / 1e9;
     writefln("Elapsed time (s): %.3f", tDeltaSecs);
-    writefln("%.8f", pi);
+    writefln("Pi observed: %.16f", pi);
+    writefln("Pi expected: 3.1415926535897932");
+
 }

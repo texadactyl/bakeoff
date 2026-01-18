@@ -109,6 +109,17 @@ go build -trimpath -ldflags="-s -w" -o go.out main.go
 ./go.out
 
 # ============================
+# Rust
+# ============================
+section "Rust"
+
+kv "Compiler" "rustc"
+kv "Version"  "$(rustc --version)"
+
+rustc -C opt-level=3 -o rs.out main.rs
+./rs.out
+
+# ============================
 # Java
 # ============================
 section "Java Compile"
@@ -120,7 +131,7 @@ section "HotSpot -server"
 kv "java" "$(java --version | head -n 1)"
 java -server main
 
-section "HotSpot -server +TieredCompilation"
+section "HotSpot -server -XX:+TieredCompilation"
 java -server -XX:+TieredCompilation main
 
 section "DONE"

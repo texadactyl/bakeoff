@@ -36,5 +36,7 @@ func main() {
     // Report.
     tDeltaSecs := (float64) ((tStop.UnixMilli() - tStart.UnixMilli())) / 1000.0
     fmt.Printf("Elapsed time (s): %.3f\n", tDeltaSecs)
-	fmt.Printf("%.8f\n", pi)
+	fmt.Printf("%.16f\n", pi)
+	fmt.Printf("Pi expected: 3.1415926535897932\n");
+
 }

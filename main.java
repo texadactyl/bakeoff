@@ -29,7 +29,8 @@ public class main {
         // Report.
         double tDeltaSecs = (tStop - tStart) / 1e9;
         System.out.printf("Elapsed time (s): %.3f%n", tDeltaSecs);
-        System.out.printf("%.8f\n", pi);
+        System.out.printf("Pi observed: %.16f\n", pi);
+        System.out.printf("Pi expected: 3.1415926535897932\n");
     }
 }
 

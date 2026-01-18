@@ -32,7 +32,8 @@ int main() {
     double tDeltaSecs = (tStop.tv_sec - tStart.tv_sec) + 
                         (tStop.tv_nsec - tStart.tv_nsec) / 1e9;    
     printf("Elapsed time (s): %.3f\n", tDeltaSecs);
-    printf("%.8f\n", pi);
+    printf("Pi observed: %.16f\n", pi);
+    printf("Pi expected: 3.1415926535897932\n");
     
     return 0;
 }

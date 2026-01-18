@@ -26,6 +26,11 @@ go version
 go build -o go.out main.go
 go.out
 echo
+echo =============== Rust =========================
+rustc --version
+rustc -C opt-level=3 -o rs.out main.rs
+rs.out
+echo
 echo =============== Java Compile ================================================
 javac --version
 javac -Xlint -Werror main.java
