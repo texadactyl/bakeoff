@@ -12,7 +12,9 @@ Leibniz Algorithm for Pi on Multiple Language Platforms
 
  ### Off-line Execution
  Bash script: `run.sh`
+ <br>
  Logging: `run.log`
+ <br>
  CSV file shared by all languages: `run.csv`
 
 ### Github Actions Execution
