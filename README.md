@@ -1,6 +1,6 @@
 # bakeoff
 Leibniz Algorithm for Pi on Multiple Language Platforms
-Inspired by https://github.com/niklas-heer/speed-comparison
+<br>Inspired by https://github.com/niklas-heer/speed-comparison
 
 ### Recipe to Get Up and Running
 * Install gcc.
