@@ -45,6 +45,14 @@ jobs:
           cache: false
  
       # ----------------------------
+      # Install Rust
+      # ----------------------------
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          
+      # ----------------------------
       # Setup Java
       # ----------------------------
       - name: Setup JDK
@@ -72,6 +80,8 @@ jobs:
           zig version
           echo "Go:"
           go version
+          echo "Rust:"
+          rustc --version
           echo "Java:"
           java -version 2>&1 | head -n 1
 
