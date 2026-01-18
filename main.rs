@@ -4,18 +4,20 @@ fn main() {
     let rounds: i64 = 3_000_000_000;
     println!("Number of rounds: {}", rounds);
     
-    let mut sum: f64;
+    let mut sum: f64 = 0.0;
     let mut flip: f64 = -1.0;
     let pi: f64;
     
     // Prime the caches.
-    sum = 0.0;
-    for ix in 1..=3 {
-        flip *= -1.0;
-        sum += flip / (ix + ix - 1) as f64;
+    #[allow(unused_assignments)]
+    {
+        for ix in 1..=3 {
+            flip *= -1.0;
+            sum += flip / (ix + ix - 1) as f64;
+        }
+        sum = 0.0;
+        flip = -1.0;
     }
-    sum = 0.0;
-    flip = -1.0;
     
     // Timed test.
     let start = Instant::now();
