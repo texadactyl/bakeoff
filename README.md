@@ -28,5 +28,4 @@ See file `run.log`.
 
 ### Afterthoughts
 
-Feel free to hack run.sh.
-Issues: Suggestions, Improvements, and questions are most welcome.
+Issues: Suggestions, improvements, and questions are most welcome.
