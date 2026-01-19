@@ -1,8 +1,21 @@
 use std::time::Instant;
+use std::env;
 
 fn main() {
-    let rounds: i64 = 3_000_000_000;
-    
+
+    // Get the number of rounds.
+    let str_rounds = env::var("rounds").unwrap_or_else(|_| {
+        eprintln!("*** The 'rounds' environment variable is not set");
+        std::process::exit(1);
+    });
+    let rounds: i64 = match str_rounds.parse() {
+        Ok(n) => n,
+        Err(_) => {
+            eprintln!("*** The 'rounds' environment variable must be an integer, saw: {}", str_rounds);
+            std::process::exit(1);
+        }
+    };
+   
     let mut sum: f64;  // ← No = 0.0 here
     let mut flip: f64 = -1.0;
     let pi: f64;
@@ -31,5 +44,5 @@ fn main() {
     
     // Report.
     let elapsed_secs = elapsed.as_secs_f64();
-    println!("Rust,{},{:.3},{:.16}", rounds, elapsed_secs, pi);
+    println!("Rust,{},{:.3},{:.40}", rounds, elapsed_secs, pi);
 }

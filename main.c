@@ -1,8 +1,23 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
 #include <time.h>
 
 int main() {
-    long long rounds = 3000000000LL;
+
+    // Get the number of rounds.
+    char *strRounds = getenv("rounds");
+    if (strRounds == NULL) {
+        printf("*** The 'rounds' environment variable is not set\n");
+        abort();
+    }
+    char *endptr;
+    errno = 0;
+    long long rounds = strtoll(strRounds, &endptr, 10);
+    if (errno != 0 || *endptr != '\0' || endptr == strRounds) {
+        printf("*** The 'rounds' environment variable must be an integer, saw: %s\n", strRounds);
+        abort();
+    }
      
     double sum = 0.0;
     double flip = -1.0;
@@ -31,7 +46,7 @@ int main() {
     double tDeltaSecs = (tStop.tv_sec - tStart.tv_sec) + 
                         (tStop.tv_nsec - tStart.tv_nsec) / 1e9;    
     
-    printf("C,%lld,%.3f,%.16f\n", rounds, tDeltaSecs, pi); 
+    printf("C,%lld,%.3f,%.40f\n", rounds, tDeltaSecs, pi); 
     
     return 0;
 }

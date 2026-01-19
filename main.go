@@ -3,11 +3,20 @@ package main
 import (
     "time"
     "fmt"
+    "os"
+    "strconv"
 )
 
 func main() {
-	rounds := int64(3_000_000_000)
 
+    // Get the number of rounds.
+    strRounds := os.Getenv("rounds")
+    rounds, err := strconv.ParseInt(strRounds, 10, 64)
+        if err != nil {
+            fmt.Printf("*** The 'rounds' environment variable must be an integer, saw: %s\n", strRounds)
+            os.Exit(1)
+        }
+     
 	sum := 0.0
 	flip := -1.0
 	var pi float64;
@@ -34,6 +43,6 @@ func main() {
     
     // Report.
     tDeltaSecs := (float64) ((tStop.UnixMilli() - tStart.UnixMilli())) / 1000.0
-	fmt.Printf("Go,%d,%.3f,%.16f\n", rounds, tDeltaSecs, pi); 
+	fmt.Printf("Go,%d,%.3f,%.40f\n", rounds, tDeltaSecs, pi); 
 
 }

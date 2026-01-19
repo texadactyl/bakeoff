@@ -1,6 +1,20 @@
 public class main {
     public static void main(String[] args) {
-        long rounds = 3_000_000_000L;
+    
+        // Get the number of rounds.
+        String strRounds = System.getenv("rounds");
+        if (strRounds == null) {
+            System.out.printf("*** The 'rounds' environment variable is not set\n");
+            System.exit(1);
+        }
+        long rounds = -1;
+        try {
+            rounds = Long.parseLong(strRounds);
+        } catch (NumberFormatException e) {
+            System.out.printf("*** The 'rounds' environment variable must be an integer, saw: %s\n", strRounds);
+            System.exit(1);
+        }
+        
         double sum = 0.0;
         double flip = -1.0;
         long tStart, tStop;
@@ -26,7 +40,7 @@ public class main {
 
         // Report.
         double tDeltaSecs = (tStop - tStart) / 1e9;
-        System.out.printf("Java,%d,%.3f,%.16f\n", rounds, tDeltaSecs, pi); 
+        System.out.printf("Java,%d,%.3f,%.40f\n", rounds, tDeltaSecs, pi); 
     }
 }
 

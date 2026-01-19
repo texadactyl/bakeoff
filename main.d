@@ -1,8 +1,24 @@
 import std.stdio;
+import std.process;
+import std.conv;
 import std.datetime.stopwatch;
+import core.stdc.stdlib;
 
 void main() {
-    long rounds = 3_000_000_000;
+
+    // Get the number of rounds.
+    string strRounds = environment.get("rounds");
+    if (strRounds is null) {
+        writeln("*** The 'rounds' environment variable is not set");
+        exit(1); 
+    }
+    long rounds;
+    try {
+        rounds = to!long(strRounds);
+    } catch (ConvException e) {
+        writefln("*** The 'rounds' environment variable must be an integer, saw: %s", strRounds);
+        exit(1); 
+    }
     
     double sum = 0.0;
     double flip = -1.0;
@@ -30,6 +46,6 @@ void main() {
     
     // Report.
     double tDeltaSecs = sw.peek().total!"nsecs" / 1e9;
-    writefln("D,%d,%.3f,%.16f", rounds, tDeltaSecs, pi);
+    writefln("D,%d,%.3f,%.40f", rounds, tDeltaSecs, pi);
 
 }

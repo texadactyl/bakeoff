@@ -1,19 +1,31 @@
 const std = @import("std");
 
 pub fn main() !void {
-    const rounds: i64 = 3_000_000_000;
-    
     var stdout_buffer: [1024]u8 = undefined;
     var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
     const stdout = &stdout_writer.interface;
     
+    // Get the number of rounds.
+    const strRounds = std.posix.getenv("rounds");
+    if (strRounds == null) {
+        try stdout.print("*** The 'rounds' environment variable must be an integer\n", .{});
+        try stdout.flush();
+        std.posix.exit(1);
+    }   
+    const rounds = std.fmt.parseInt(i64, strRounds.?, 10) catch {
+        try stdout.print("*** The 'rounds' environment variable must be an integer, saw: {s}\n", .{strRounds.?});
+        try stdout.flush();
+        std.posix.exit(1);
+    };
+    
     var sum: f64 = 0.0;
     var flip: f64 = -1.0;
     var pi: f64 = undefined;
-    var ix: i64 = undefined;
+    var t_start: i64 = undefined;
+    var t_stop: i64 = undefined;
     
     // Prime the caches.
-    ix = 1;
+    var ix: i64 = 1;
     while (ix <= 3) : (ix += 1) {
         flip *= -1.0;
         sum += flip / @as(f64, @floatFromInt(ix + ix - 1));
@@ -22,19 +34,17 @@ pub fn main() !void {
     flip = -1.0;
     
     // Timed test.
-    var timer = try std.time.Timer.start();
-    
+    t_start = std.time.milliTimestamp();
     ix = 1;
     while (ix <= rounds) : (ix += 1) {
         flip *= -1.0;
         sum += flip / @as(f64, @floatFromInt(ix + ix - 1));
     }
-    
     pi = sum * 4.0;
-    const elapsed_ns = timer.read();
+    t_stop = std.time.milliTimestamp();
     
     // Report.
-    const elapsed_secs = @as(f64, @floatFromInt(elapsed_ns)) / 1e9;
-    try stdout.print("Zig,{d},{d:.3},{d:.16}\n", .{rounds, elapsed_secs, pi});
+    const t_delta_secs = @as(f64, @floatFromInt(t_stop - t_start)) / 1000.0;
+    try stdout.print("Zig,{d},{d:.3},{d:.40}\n", .{rounds, t_delta_secs, pi});
     try stdout.flush();
 }
