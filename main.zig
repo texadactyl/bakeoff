@@ -1,22 +1,34 @@
 const std = @import("std");
 
 pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
+    
     var stdout_buffer: [1024]u8 = undefined;
     var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
     const stdout = &stdout_writer.interface;
     
-    // Get the number of rounds.
-    const strRounds = std.posix.getenv("rounds");
-    if (strRounds == null) {
-        try stdout.print("*** The 'rounds' environment variable must be an integer\n", .{});
+    // Get the number of rounds (cross-platform).
+    const strRounds = std.process.getEnvVarOwned(allocator, "rounds") catch |err| {
+        if (err == error.EnvironmentVariableNotFound) {
+            try stdout.print("*** The 'rounds' environment variable is not set\n", .{});
+        } else {
+            try stdout.print("*** Error reading 'rounds' environment variable\n", .{});
+        }
         try stdout.flush();
-        std.posix.exit(1);
-    }   
-    const rounds = std.fmt.parseInt(i64, strRounds.?, 10) catch {
-        try stdout.print("*** The 'rounds' environment variable must be an integer, saw: {s}\n", .{strRounds.?});
-        try stdout.flush();
-        std.posix.exit(1);
+        std.process.exit(1);
     };
+    defer allocator.free(strRounds);
+    
+    const rounds = std.fmt.parseInt(i64, strRounds, 10) catch {
+        try stdout.print("*** The 'rounds' environment variable must be an integer, saw: {s}\n", .{strRounds});
+        try stdout.flush();
+        std.process.exit(1);
+    };
+    
+    try stdout.print("Number of rounds: {d}\n", .{rounds});
+    try stdout.flush();
     
     var sum: f64 = 0.0;
     var flip: f64 = -1.0;
