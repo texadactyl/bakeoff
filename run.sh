@@ -3,9 +3,9 @@
 set -euo pipefail
 unset JAVA_TOOL_OPTIONS
 
-LOGFILE=ga.log
+LOGFILE=run.log
 exec > >(tee "$LOGFILE") 2>&1
-CSVFILE=ga.csv
+CSVFILE=run.csv
 echo "lang,nloops,elapsed-secs,computed-pi" > $CSVFILE
 
 timestamp() {
