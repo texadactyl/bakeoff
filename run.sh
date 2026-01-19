@@ -112,9 +112,6 @@ section "HotSpot JVM"
 kv "java" "$(java --version | head -n 1)"
 java -server main | tee -a $CSVFILE
 
-section "DONE"
-timestamp
-
 # ============================
 # Rust
 # ============================
@@ -147,4 +144,8 @@ zig build-exe main.zig \
 section "Show CSV file"
 echo
 cat $CSVFILE
+
+section "DONE"
+timestamp
+
 
