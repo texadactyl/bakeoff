@@ -28,9 +28,9 @@ jobs:
            Set-MpPreference -DisableRealtimeMonitoring $true
            
      # ----------------------------
-      # Set up Nim
+      # Install Nim
       # ----------------------------
-      - name: Install Nim (Unix)
+      - name: Install Nim (POSIX)
         if: runner.os != 'Windows'
         run: |
           curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
@@ -40,8 +40,18 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install nim -y
-          echo "C:\tools\Nim\nim-2.2.6\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          Get-ChildItem C:\tools\Nim -Recurse
+          
+          # Find nim.exe dynamically
+          $nimExe = Get-ChildItem C:\tools\Nim -Recurse -Filter "nim.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+          
+          if ($nimExe) {
+            $nimBinDir = $nimExe.Directory.FullName
+            Write-Host "Found Nim at: $nimBinDir"
+            echo $nimBinDir | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          } else {
+            Write-Host "ERROR: nim.exe not found!"
+            exit 1
+          }
         shell: powershell
 
       # ----------------------------
