@@ -9,7 +9,7 @@ jobs:
       fail-fast: true
       matrix:
         #os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest, windows-11-arm, windows-latest]
-        os: [windows-11-arm]
+        os: [windows-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -28,11 +28,16 @@ jobs:
         run: |
           Set-MpPreference -DisableRealtimeMonitoring $true
 
-      # ---------------------------------------
-      # bash commands
-      # ---------------------------------------
-      - name: Run a bash command
-        shell: bash
+      - name: Install Nim (Unix)
+        if: runner.os != 'Windows'
         run: |
-           ARCH="${RUNNER_ARCH:-$(uname -m)}"
-           echo $ARCH
+          curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
+          echo "$HOME/.nimble/bin" >> $GITHUB_PATH
+      
+      - name: Install Nim (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install nim -y
+          echo "C:\tools\Nim\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          Get-ChildItem C:\tools\Nim -Recurse
+        shell: powershell
