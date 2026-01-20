@@ -27,9 +27,6 @@ pub fn main() !void {
         std.process.exit(1);
     };
     
-    try stdout.print("Number of rounds: {d}\n", .{rounds});
-    try stdout.flush();
-    
     var sum: f64 = 0.0;
     var flip: f64 = -1.0;
     var pi: f64 = undefined;
