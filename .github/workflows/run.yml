@@ -57,7 +57,7 @@ jobs:
       # ----------------------------
       # Install D compiler (ldc2)
       # ----------------------------
-      - name: Set up D (ldc2)
+      - name: Install D (ldc2)
         uses: dlang-community/setup-dlang@v1
         with:
           compiler: ldc-latest
@@ -65,7 +65,7 @@ jobs:
       # ----------------------------
       # Install Zig
       # ----------------------------
-      - name: Set up Zig
+      - name: Install Zig
         uses: goto-bus-stop/setup-zig@v2
         with:
           version: 0.15.2
@@ -74,16 +74,16 @@ jobs:
       # ----------------------------
       # Install Go
       # ----------------------------
-      - name: Set up Go
+      - name: Install Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.24
+          go-version: latest
           cache: false
  
       # ----------------------------
       # Install Rust
       # ----------------------------
-      - name: Set up Rust
+      - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
@@ -91,7 +91,7 @@ jobs:
       # ----------------------------
       # Setup Java
       # ----------------------------
-      - name: Set up Hotspot JDK
+      - name: Set up Hotspot JVM
         uses: actions/setup-java@v4
         env:
           NODE_NO_WARNINGS: 1
@@ -100,9 +100,9 @@ jobs:
           java-version: '21'
 
       # ----------------------------
-      # Verify toolchains
+      # Verify Language Processors
       # ----------------------------
-      - name: Verify Compilers
+      - name: Verify Language Processors
         shell: bash
         run: |
           echo "=== Compilers ==="
@@ -110,7 +110,7 @@ jobs:
           echo "Arch: $(uname -m)"
           echo "GCC:"
           gcc --version | head -n 1 || echo "gcc not available"
-          echo "LDC2:"
+          echo "D \(LDC2\):"
           ldc2 --version 2>&1 | grep -m1 "LDC" || echo "ldc2 not available"
           echo "Go:"
           go version
