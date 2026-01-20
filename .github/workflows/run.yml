@@ -80,7 +80,7 @@ jobs:
       # ----------------------------
       # Setup Java
       # ----------------------------
-      - name: Setup JDK
+      - name: Set up Hotspot JDK
         uses: actions/setup-java@v4
         env:
           NODE_NO_WARNINGS: 1
