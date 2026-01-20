@@ -101,16 +101,18 @@ jobs:
           gcc --version | head -n 1 || echo "gcc not available"
           echo "LDC2:"
           ldc2 --version 2>&1 | grep -m1 "LDC" || echo "ldc2 not available"
-          echo "Zig:"
-          zig version
           echo "Go:"
           go version
           echo "Nim:"
           nim --version
+          echo "Python:"
+          python3 --version
           echo "Rust:"
           rustc --version
           echo "Java:"
           java -version 2>&1 | head -n 1
+          echo "Zig:"
+          zig version
 
       # -----------------------------
       # Run bash script: run.sh

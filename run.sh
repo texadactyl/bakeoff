@@ -126,6 +126,16 @@ nim c -d:release -d:danger --opt:speed --passC:-march=native -o:./nim.out --hint
 
 
 # ============================
+# Python
+# ============================
+section "Python"
+
+kv "Compiler" "python3"
+kv "Version"  "$(python3 --version)"
+
+python3 ./main.py | tee -a $CSVFILE
+
+# ============================
 # Rust
 # ============================
 section "Rust"
