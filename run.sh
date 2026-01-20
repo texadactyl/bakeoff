@@ -121,8 +121,8 @@ section "Nim"
 kv "Compiler" "nim"
 kv "Version"  "$(nim --version | head -n 1)"
 
-nim c -d:release -d:danger --opt:speed --passC:-march=native -o:nim.out --hints:off main.nim
-nim.out  | tee -a $CSVFILE
+nim c -d:release -d:danger --opt:speed --passC:-march=native -o:./nim.out --hints:off main.nim
+./nim.out  | tee -a $CSVFILE
 
 
 # ============================
