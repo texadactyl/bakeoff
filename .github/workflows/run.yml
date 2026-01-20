@@ -17,6 +17,14 @@ jobs:
       # Checkout
       # ----------------------------
       - uses: actions/checkout@v4
+      
+      # ----------------------------
+      # Set up Nim
+      # ----------------------------
+      - uses: jiro4989/setup-nim-action@v2
+        with:
+          nim-version: ${{ matrix.nim-version }}
+
 
       # ---------------------------------------
       # Disable Windows Defender (Windows only)
@@ -89,6 +97,8 @@ jobs:
           zig version
           echo "Go:"
           go version
+          echo "Nim:"
+          nim --version
           echo "Rust:"
           rustc --version
           echo "Java:"
