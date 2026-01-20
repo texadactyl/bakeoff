@@ -21,10 +21,10 @@ jobs:
       # ----------------------------
       # Set up Nim
       # ----------------------------
-      - uses: jiro4989/setup-nim-action@v2
-        with:
-          nim-version: ${{ matrix.nim-version }}
-
+      - name: Install Nim via choosenim
+        run: |
+          curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
+          echo "$HOME/.nimble/bin" >> $GITHUB_PATH
 
       # ---------------------------------------
       # Disable Windows Defender (Windows only)
