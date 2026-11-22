@@ -34,6 +34,9 @@ func main() {
 	if len(Args) != 1 {
 		showHelp()
 	}
+	if Args[0] == "-h" {
+		showHelp()
+	}
 
 	// Get NLOOPS.
 	NLOOPS, err := strconv.Atoi(Args[0])

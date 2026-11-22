@@ -43,6 +43,6 @@ jobs:
 
     - name: Run bakeoff
       run: |
-        ./bakeoff 10000000
+        ./bakeoff 100000000
 
 
