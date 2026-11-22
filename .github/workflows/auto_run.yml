@@ -1,4 +1,4 @@
-name: Auto build and run bakeoff on 3 O/Ses
+name: Auto build and run bakeoff on 6 O/Ses
 
 on:
   workflow_dispatch:
