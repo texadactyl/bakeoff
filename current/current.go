@@ -95,23 +95,25 @@ func check(label string, ix int, expected any, observed any) bool {
 	return true
 }
 
-func Current(numLoops int, dupAndDup2Divisor int) bool {
+func Current(numLoops int, dupDup2Modulus int) bool {
 	var thing any
 	var emptyOpStack []any
 	var fr frames.Frame
 	var pi64 = 3.14
 	var pi64p1 = 4.14
 	var one = 1.0
-	var dupDup2Loops = numLoops / dupAndDup2Divisor
+	var pi32 = float32(3.14)
+	var pi32p1 = float32(4.14)
 
 	for range 10 {
 		emptyOpStack = append(emptyOpStack, int64(0))
 	}
 	var locals []any
 
-	// doIadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 	for ix := range numLoops {
+	
+		// doIadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, int64(math.MaxInt32-1))
 		push(&fr, int64(1))
 		doIadd(&fr, 0)
@@ -119,11 +121,9 @@ func Current(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doIadd", ix, int32(math.MaxInt32), int32(thing.(int64))) {
 			return false
 		}
-	}
-
-	// doLadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range numLoops {
+		
+		// doLadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, int64(math.MaxInt64-1))
 		push(&fr, int64(1))
 		doLadd(&fr, 0)
@@ -131,13 +131,9 @@ func Current(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doLadd", ix, int64(math.MaxInt64), thing.(int64)) {
 			return false
 		}
-	}
 
-	// doFadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	var pi32 = float32(3.14)
-	var pi32p1 = float32(4.14)
-	for ix := range numLoops {
+		// doFadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, float64(pi32))
 		push(&fr, one)
 		doFadd(&fr, 0)
@@ -145,11 +141,9 @@ func Current(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doFadd", ix, pi32p1, float32(thing.(float64))) {
 			return false
 		}
-	}
 
-	// doDadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range numLoops {
+		// doDadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pi64)
 		push(&fr, one)
 		doDadd(&fr, 0)
@@ -157,57 +151,58 @@ func Current(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doDadd", ix, pi64p1, thing.(float64)) {
 			return false
 		}
-	}
 
-	// doDup
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range dupDup2Loops {
-		push(&fr, pi64)
-		doDup(&fr, 0)
-		thing = pop(&fr)
-		if !check("doDup top", ix, pi64, thing.(float64)) {
-			return false
-		}
-		thing = pop(&fr)
-		if !check("doDup next", ix, pi64, thing.(float64)) {
-			return false
-		}
-	}
+		if ix%dupDup2Modulus == 0 {
+		
+			// doDup
+			fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
+			push(&fr, pi64)
+			doDup(&fr, 0)
+			thing = pop(&fr)
+			if !check("doDup top", ix, pi64, thing.(float64)) {
+				return false
+			}
+			thing = pop(&fr)
+			if !check("doDup next", ix, pi64, thing.(float64)) {
+				return false
+			}
 
-	// doDup2
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range dupDup2Loops {
-		push(&fr, pi64)
-		push(&fr, pi64p1)
-		doDup2(&fr, 0)
-		thing = pop(&fr)
-		if !check("doDup2 top", ix, pi64p1, thing.(float64)) {
-			return false
-		}
-		thing = pop(&fr)
-		if !check("doDup2 #2", ix, pi64, thing.(float64)) {
-			return false
-		}
-		thing = pop(&fr)
-		if !check("doDup2 #3", ix, pi64p1, thing.(float64)) {
-			return false
-		}
-		thing = pop(&fr)
-		if !check("doDup2 #4", ix, pi64, thing.(float64)) {
-			return false
-		}
-	}
+			// doDup2
+			fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
+			push(&fr, pi64)
+			push(&fr, pi64p1)
+			doDup2(&fr, 0)
+			thing = pop(&fr)
+			if !check("doDup2 top", ix, pi64p1, thing.(float64)) {
+				return false
+			}
+			thing = pop(&fr)
+			if !check("doDup2 #2", ix, pi64, thing.(float64)) {
+				return false
+			}
+			thing = pop(&fr)
+			if !check("doDup2 #3", ix, pi64p1, thing.(float64)) {
+				return false
+			}
+			thing = pop(&fr)
+			if !check("doDup2 #4", ix, pi64, thing.(float64)) {
+				return false
+			}
 
-	// Object
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	obj := &object.Object{X: 1, Y: 2, Z: 3}
-	for range numLoops {
+		}
+
+		// Object
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
+		obj := &object.Object{X: 1, Y: 2, Z: 3}
 		push(&fr, obj)
 		obj = pop(&fr).(*object.Object)
-	}
-	if obj.X != 1 || obj.Y != 2 || obj.Z != 3 {
-		return false
-	}
+		if obj.X != 1 || obj.Y != 2 || obj.Z != 3 {
+			return false
+		}
 
+	} // for ix := range numLoops
+
+	// Success!
 	return true
+
 }

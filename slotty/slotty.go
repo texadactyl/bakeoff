@@ -95,7 +95,7 @@ func check(label string, ix int, expected any, observed any) bool {
 	return true
 }
 
-func Slotty(numLoops int, dupAndDup2Divisor int) bool {
+func Slotty(numLoops int, dupDup2Modulus int) bool {
 	var slot pslot.Slot
 	var emptyOpStack []pslot.Slot
 	var fr frames.Frame
@@ -103,16 +103,18 @@ func Slotty(numLoops int, dupAndDup2Divisor int) bool {
 	var pi64p1 = 4.14
 	var one32 float32 = 1.0
 	var one64 = 1.0
-	var dupDup2Loops = numLoops / dupAndDup2Divisor
+	var pi32 = float32(3.14)
+	var pi32p1 = float32(4.14)
 
 	for range 10 {
 		emptyOpStack = append(emptyOpStack, pslot.IntSlot(0))
 	}
 	var locals []pslot.Slot
 
-	// doIadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 	for ix := range numLoops {
+
+		// doIadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pslot.IntSlot(math.MaxInt32-1))
 		push(&fr, pslot.IntSlot(1))
 		doIadd(&fr, 0)
@@ -120,11 +122,9 @@ func Slotty(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doIadd", ix, int32(math.MaxInt32), pslot.AsInt32(slot)) {
 			return false
 		}
-	}
 
-	// doLadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range numLoops {
+		// doLadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pslot.IntSlot(math.MaxInt64-1))
 		push(&fr, pslot.IntSlot(1))
 		doLadd(&fr, 0)
@@ -132,13 +132,9 @@ func Slotty(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doLadd", ix, int64(math.MaxInt64), pslot.AsInt64(slot)) {
 			return false
 		}
-	}
 
-	// doFadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	var pi32 = float32(3.14)
-	var pi32p1 = float32(4.14)
-	for ix := range numLoops {
+		// doFadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pslot.Float32Slot(pi32))
 		push(&fr, pslot.Float32Slot(one32))
 		doFadd(&fr, 0)
@@ -146,11 +142,9 @@ func Slotty(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doFadd", ix, pi32p1, pslot.AsFloat32(slot)) {
 			return false
 		}
-	}
 
-	// doDadd
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range numLoops {
+		// doDadd
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pslot.Float64Slot(pi64))
 		push(&fr, pslot.Float64Slot(one64))
 		doDadd(&fr, 0)
@@ -158,58 +152,56 @@ func Slotty(numLoops int, dupAndDup2Divisor int) bool {
 		if !check("doDadd", ix, pi64p1, pslot.AsFloat64(slot)) {
 			return false
 		}
-	}
 
-	// doDup
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range dupDup2Loops {
-		push(&fr, pslot.Float64Slot(pi64))
-		doDup(&fr, 0)
-		slot = pop(&fr)
-		if !check("doDup top", ix, pi64, pslot.AsFloat64(slot)) {
-			return false
-		}
-		slot = pop(&fr)
-		if !check("doDup next", ix, pi64, pslot.AsFloat64(slot)) {
-			return false
-		}
-	}
+		if ix%dupDup2Modulus == 0 {
+			// doDup
+			fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
+			push(&fr, pslot.Float64Slot(pi64))
+			doDup(&fr, 0)
+			slot = pop(&fr)
+			if !check("doDup top", ix, pi64, pslot.AsFloat64(slot)) {
+				return false
+			}
+			slot = pop(&fr)
+			if !check("doDup next", ix, pi64, pslot.AsFloat64(slot)) {
+				return false
+			}
 
-	// doDup2
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range dupDup2Loops {
-		push(&fr, pslot.Float64Slot(pi64))
-		push(&fr, pslot.Float64Slot(pi64p1))
-		doDup2(&fr, 0)
-		slot = pop(&fr)
-		if !check("doDup2 top", ix, pi64p1, pslot.AsFloat64(slot)) {
-			return false
+			// doDup2
+			fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
+			push(&fr, pslot.Float64Slot(pi64))
+			push(&fr, pslot.Float64Slot(pi64p1))
+			doDup2(&fr, 0)
+			slot = pop(&fr)
+			if !check("doDup2 top", ix, pi64p1, pslot.AsFloat64(slot)) {
+				return false
+			}
+			slot = pop(&fr)
+			if !check("doDup2 #2", ix, pi64, pslot.AsFloat64(slot)) {
+				return false
+			}
+			slot = pop(&fr)
+			if !check("doDup2 #3", ix, pi64p1, pslot.AsFloat64(slot)) {
+				return false
+			}
+			slot = pop(&fr)
+			if !check("doDup2 #4", ix, pi64, pslot.AsFloat64(slot)) {
+				return false
+			}
 		}
-		slot = pop(&fr)
-		if !check("doDup2 #2", ix, pi64, pslot.AsFloat64(slot)) {
-			return false
-		}
-		slot = pop(&fr)
-		if !check("doDup2 #3", ix, pi64p1, pslot.AsFloat64(slot)) {
-			return false
-		}
-		slot = pop(&fr)
-		if !check("doDup2 #4", ix, pi64, pslot.AsFloat64(slot)) {
-			return false
-		}
-	}
 
-	// Object
-	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	obj := &object.Object{X: 1, Y: 2, Z: 3}
-	for range numLoops {
+		// Object
+		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
+		obj := &object.Object{X: 1, Y: 2, Z: 3}
 		push(&fr, pslot.ObjSlot(obj))
 		slot = pop(&fr)
 		obj = pslot.AsObject(slot)
-	}
-	if obj.X != 1 || obj.Y != 2 || obj.Z != 3 {
-		return false
-	}
+		if obj.X != 1 || obj.Y != 2 || obj.Z != 3 {
+			return false
+		}
 
+	} // for ix := range numLoops
+
+	// Success!
 	return true
 }

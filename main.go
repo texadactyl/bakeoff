@@ -26,7 +26,9 @@ func showHelp() {
 func main() {
 
 	numLoops := -1
-	dupAndDup2Divisor := 10
+
+	// DUP and DUP2 execute every numLoops % dupDup2Modulus
+	dupDup2Modulus := 10
 
 	var Args []string
 	Args = append(Args, os.Args[1:]...)
@@ -54,7 +56,7 @@ func main() {
 	if flagCurrent {
 		fmt.Println("Current begin .....")
 		ti := time.Now()
-		success := current.Current(numLoops, dupAndDup2Divisor)
+		success := current.Current(numLoops, dupDup2Modulus)
 		tf := time.Now()
 		elapsed := tf.Sub(ti)
 		currentETsecs = float64(elapsed.Milliseconds()) / 1000.0
@@ -69,7 +71,7 @@ func main() {
 	if flagSlotty {
 		fmt.Println("Slotty begin .....")
 		ti := time.Now()
-		success := slotty.Slotty(numLoops, dupAndDup2Divisor)
+		success := slotty.Slotty(numLoops, dupDup2Modulus)
 		tf := time.Now()
 		elapsed := tf.Sub(ti)
 		slottyETsecs = float64(elapsed.Milliseconds()) / 1000.0
