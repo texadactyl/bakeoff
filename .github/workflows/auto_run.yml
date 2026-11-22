@@ -1,0 +1,48 @@
+name: Auto build and run polls2026 on 3 O/Ses
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.py'
+      - '**.txt'
+      - '**.yml'
+    branches: [ "main" ]
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - '**.py'
+      - '**.txt'
+      - '**.yml'
+    branches: [ "main" ]
+
+jobs:
+  build_and_test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup Go
+      uses: actions/setup-go@v7
+      with:
+          go-version: '1.27.x'
+          cache: false
+          
+    - name: Setup bakeoff
+      run: |
+        go get
+        go build -o . -v ./...
+        ./bakeoff -h
+
+    - name: Run bakeoff
+      run: |
+        ./bakeoff 10000000
+
+
