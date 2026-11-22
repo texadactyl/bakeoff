@@ -17,38 +17,55 @@ var currentETsecs float64
 
 // Show help and then exit to the O/S
 func showHelp() {
-	fmt.Printf("\nUsage:  bakeoff  NLOOPS\n")
-	fmt.Printf("\twhere NLOOPS is the number of loops to perform\n")
+	fmt.Printf("\nUsage:  bakeoff  numLoops  dupDup2Modulus\n\nwhere\n")
+	fmt.Printf("\t* numLoops is the number of loops to perform.\n")
+	fmt.Printf("\t* DUP and DUP2 execute every numLoops mod the value of dupDup2Modulus.\n")
 	fmt.Print("\n")
 	os.Exit(0)
 }
 
 func main() {
+	var err error
 
+	// Number of loops to execute
 	numLoops := -1
 
-	// DUP and DUP2 execute every numLoops % dupDup2Modulus
-	dupDup2Modulus := 10
+	// DUP and DUP2 execute every numLoops mod dupDup2Modulus
+	dupDup2Modulus := -1
 
 	var Args []string
 	Args = append(Args, os.Args[1:]...)
 
 	// If no options specified, just show help.
-	if len(Args) != 1 {
-		showHelp()
-	}
 	if Args[0] == "-h" {
 		showHelp()
 	}
 
+	// Make sure that we have 2 command line arguments.
+	if len(Args) != 2 {
+		fmt.Printf("\nTwo command line arguments are required.\n")
+		showHelp()
+	}
+
 	// Get numLoops.
-	numLoops, err := strconv.Atoi(Args[0])
+	numLoops, err = strconv.Atoi(Args[0])
 	if err != nil {
 		fmt.Printf("Invalid numLoops: %s\n", Args[0])
 		showHelp()
 	}
 	if numLoops < 1 {
 		fmt.Printf("numLoops must be greater than zero\n")
+		showHelp()
+	}
+
+	// Get dupDup2Modulus.
+	dupDup2Modulus, err = strconv.Atoi(Args[1])
+	if err != nil {
+		fmt.Printf("Invalid dupDup2Modulus: %s\n", Args[0])
+		showHelp()
+	}
+	if dupDup2Modulus < 1 {
+		fmt.Printf("dupDup2Modulus must be greater than zero\n")
 		showHelp()
 	}
 
