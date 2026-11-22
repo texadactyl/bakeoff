@@ -25,7 +25,8 @@ func showHelp() {
 
 func main() {
 
-	NLOOPS := -1
+	numLoops := -1
+	dupAndDup2Divisor := 10
 
 	var Args []string
 	Args = append(Args, os.Args[1:]...)
@@ -38,14 +39,14 @@ func main() {
 		showHelp()
 	}
 
-	// Get NLOOPS.
-	NLOOPS, err := strconv.Atoi(Args[0])
+	// Get numLoops.
+	numLoops, err := strconv.Atoi(Args[0])
 	if err != nil {
-		fmt.Printf("Invalid NLOOPS: %s\n", Args[0])
+		fmt.Printf("Invalid numLoops: %s\n", Args[0])
 		showHelp()
 	}
-	if NLOOPS < 1 {
-		fmt.Printf("NLOOPS must be greater than zero\n")
+	if numLoops < 1 {
+		fmt.Printf("numLoops must be greater than zero\n")
 		showHelp()
 	}
 
@@ -53,7 +54,7 @@ func main() {
 	if flagCurrent {
 		fmt.Println("Current begin .....")
 		ti := time.Now()
-		success := current.Current(NLOOPS)
+		success := current.Current(numLoops, dupAndDup2Divisor)
 		tf := time.Now()
 		elapsed := tf.Sub(ti)
 		currentETsecs = float64(elapsed.Milliseconds()) / 1000.0
@@ -68,7 +69,7 @@ func main() {
 	if flagSlotty {
 		fmt.Println("Slotty begin .....")
 		ti := time.Now()
-		success := slotty.Slotty(NLOOPS)
+		success := slotty.Slotty(numLoops, dupAndDup2Divisor)
 		tf := time.Now()
 		elapsed := tf.Sub(ti)
 		slottyETsecs = float64(elapsed.Milliseconds()) / 1000.0

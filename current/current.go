@@ -95,13 +95,14 @@ func check(label string, ix int, expected any, observed any) bool {
 	return true
 }
 
-func Current(argNloops int) bool {
+func Current(numLoops int, dupAndDup2Divisor int) bool {
 	var thing any
 	var emptyOpStack []any
 	var fr frames.Frame
 	var pi64 = 3.14
 	var pi64p1 = 4.14
 	var one = 1.0
+	var dupDup2Loops = numLoops / dupAndDup2Divisor
 
 	for range 10 {
 		emptyOpStack = append(emptyOpStack, int64(0))
@@ -110,7 +111,7 @@ func Current(argNloops int) bool {
 
 	// doIadd
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, int64(math.MaxInt32-1))
 		push(&fr, int64(1))
 		doIadd(&fr, 0)
@@ -122,7 +123,7 @@ func Current(argNloops int) bool {
 
 	// doLadd
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, int64(math.MaxInt64-1))
 		push(&fr, int64(1))
 		doLadd(&fr, 0)
@@ -136,7 +137,7 @@ func Current(argNloops int) bool {
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 	var pi32 = float32(3.14)
 	var pi32p1 = float32(4.14)
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, float64(pi32))
 		push(&fr, one)
 		doFadd(&fr, 0)
@@ -148,7 +149,7 @@ func Current(argNloops int) bool {
 
 	// doDadd
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, pi64)
 		push(&fr, one)
 		doDadd(&fr, 0)
@@ -159,9 +160,8 @@ func Current(argNloops int) bool {
 	}
 
 	// doDup
-	// doDup
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range dupDup2Loops {
 		push(&fr, pi64)
 		doDup(&fr, 0)
 		thing = pop(&fr)
@@ -176,7 +176,7 @@ func Current(argNloops int) bool {
 
 	// doDup2
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range dupDup2Loops {
 		push(&fr, pi64)
 		push(&fr, pi64p1)
 		doDup2(&fr, 0)
@@ -201,7 +201,7 @@ func Current(argNloops int) bool {
 	// Object
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 	obj := &object.Object{X: 1, Y: 2, Z: 3}
-	for range argNloops {
+	for range numLoops {
 		push(&fr, obj)
 		obj = pop(&fr).(*object.Object)
 	}

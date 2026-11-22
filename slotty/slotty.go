@@ -95,7 +95,7 @@ func check(label string, ix int, expected any, observed any) bool {
 	return true
 }
 
-func Slotty(argNloops int) bool {
+func Slotty(numLoops int, dupAndDup2Divisor int) bool {
 	var slot pslot.Slot
 	var emptyOpStack []pslot.Slot
 	var fr frames.Frame
@@ -103,6 +103,7 @@ func Slotty(argNloops int) bool {
 	var pi64p1 = 4.14
 	var one32 float32 = 1.0
 	var one64 = 1.0
+	var dupDup2Loops = numLoops / dupAndDup2Divisor
 
 	for range 10 {
 		emptyOpStack = append(emptyOpStack, pslot.IntSlot(0))
@@ -111,7 +112,7 @@ func Slotty(argNloops int) bool {
 
 	// doIadd
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, pslot.IntSlot(math.MaxInt32-1))
 		push(&fr, pslot.IntSlot(1))
 		doIadd(&fr, 0)
@@ -123,7 +124,7 @@ func Slotty(argNloops int) bool {
 
 	// doLadd
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, pslot.IntSlot(math.MaxInt64-1))
 		push(&fr, pslot.IntSlot(1))
 		doLadd(&fr, 0)
@@ -137,7 +138,7 @@ func Slotty(argNloops int) bool {
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 	var pi32 = float32(3.14)
 	var pi32p1 = float32(4.14)
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, pslot.Float32Slot(pi32))
 		push(&fr, pslot.Float32Slot(one32))
 		doFadd(&fr, 0)
@@ -149,7 +150,7 @@ func Slotty(argNloops int) bool {
 
 	// doDadd
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range numLoops {
 		push(&fr, pslot.Float64Slot(pi64))
 		push(&fr, pslot.Float64Slot(one64))
 		doDadd(&fr, 0)
@@ -161,7 +162,7 @@ func Slotty(argNloops int) bool {
 
 	// doDup
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range dupDup2Loops {
 		push(&fr, pslot.Float64Slot(pi64))
 		doDup(&fr, 0)
 		slot = pop(&fr)
@@ -176,7 +177,7 @@ func Slotty(argNloops int) bool {
 
 	// doDup2
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
-	for ix := range argNloops {
+	for ix := range dupDup2Loops {
 		push(&fr, pslot.Float64Slot(pi64))
 		push(&fr, pslot.Float64Slot(pi64p1))
 		doDup2(&fr, 0)
@@ -201,7 +202,7 @@ func Slotty(argNloops int) bool {
 	// Object
 	fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 	obj := &object.Object{X: 1, Y: 2, Z: 3}
-	for range argNloops {
+	for range numLoops {
 		push(&fr, pslot.ObjSlot(obj))
 		slot = pop(&fr)
 		obj = pslot.AsObject(slot)
