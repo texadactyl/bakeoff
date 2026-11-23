@@ -6,6 +6,10 @@ import (
 	"math"
 )
 
+func gfunc(params[]any) any {
+	return int64(0)
+}
+
 func push(fr *frames.Frame, thing any) {
 	fr.TOS++
 	fr.OpStack[fr.TOS] = thing
@@ -123,6 +127,9 @@ func Current(numLoops int) bool {
 			thing = pop(&fr)
 			thing = pop(&fr)
 			thing = pop(&fr)
+
+			// G function
+			thing = gfunc([]any{thing})
 
 		}
 

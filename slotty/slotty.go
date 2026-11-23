@@ -7,6 +7,10 @@ import (
 	"math"
 )
 
+func gfunc(params[]any) any {
+	return int64(0)
+}
+
 func push(fr *frames.Frame, slot pslot.Slot) {
 	fr.TOS++
 	fr.OpStack[fr.TOS] = slot
@@ -123,6 +127,10 @@ func Slotty(numLoops int) bool {
 			slot = pop(&fr)
 			slot = pop(&fr)
 			slot = pop(&fr)
+
+			// G function
+			var thing any
+			thing = gfunc([]any{thing})
 		}
 
 		// Object
