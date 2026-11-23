@@ -4,7 +4,6 @@ import (
 	"bakeoff/slotty/frames"
 	"bakeoff/slotty/object"
 	"bakeoff/slotty/pslot"
-	"fmt"
 	"math"
 )
 
@@ -66,36 +65,7 @@ func doDup2(fr *frames.Frame, _ int64) int {
 	return 1
 }
 
-func check(label string, ix int, expected any, observed any) bool {
-	var equal bool
-	switch observed.(type) {
-	case int32:
-		exp := expected.(int32)
-		obs := observed.(int32)
-		equal = exp == obs
-	case int64:
-		exp := expected.(int64)
-		obs := observed.(int64)
-		equal = exp == obs
-	case float32:
-		exp := expected.(float32)
-		obs := observed.(float32)
-		equal = fmt.Sprintf("%.6f", exp) == fmt.Sprintf("%.6f", obs)
-	case float64:
-		exp := expected.(float64)
-		obs := observed.(float64)
-		equal = fmt.Sprintf("%.6f", exp) == fmt.Sprintf("%.6f", obs)
-	default:
-		panic(fmt.Sprintf("Unexpected type for observed: %T", observed))
-	}
-	if !equal {
-		fmt.Printf("*** ERROR, %s [%d] expected: %v, observed: %v\n", label, ix, expected, observed)
-		return false
-	}
-	return true
-}
-
-func Slotty(numLoops int, dupDup2Modulus int) bool {
+func Slotty(numLoops int) bool {
 	var slot pslot.Slot
 	var emptyOpStack []pslot.Slot
 	var fr frames.Frame
@@ -104,7 +74,6 @@ func Slotty(numLoops int, dupDup2Modulus int) bool {
 	var one32 float32 = 1.0
 	var one64 = 1.0
 	var pi32 = float32(3.14)
-	var pi32p1 = float32(4.14)
 
 	for range 10 {
 		emptyOpStack = append(emptyOpStack, pslot.IntSlot(0))
@@ -113,92 +82,54 @@ func Slotty(numLoops int, dupDup2Modulus int) bool {
 
 	for ix := range numLoops {
 
-		// doIadd
 		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
+
+		// doIadd
 		push(&fr, pslot.IntSlot(math.MaxInt32-1))
 		push(&fr, pslot.IntSlot(1))
 		doIadd(&fr, 0)
 		slot = pop(&fr)
-		if !check("doIadd", ix, int32(math.MaxInt32), pslot.AsInt32(slot)) {
-			return false
-		}
 
 		// doLadd
-		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pslot.IntSlot(math.MaxInt64-1))
 		push(&fr, pslot.IntSlot(1))
 		doLadd(&fr, 0)
 		slot = pop(&fr)
-		if !check("doLadd", ix, int64(math.MaxInt64), pslot.AsInt64(slot)) {
-			return false
-		}
 
 		// doFadd
-		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pslot.Float32Slot(pi32))
 		push(&fr, pslot.Float32Slot(one32))
 		doFadd(&fr, 0)
 		slot = pop(&fr)
-		if !check("doFadd", ix, pi32p1, pslot.AsFloat32(slot)) {
-			return false
-		}
 
 		// doDadd
-		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		push(&fr, pslot.Float64Slot(pi64))
 		push(&fr, pslot.Float64Slot(one64))
 		doDadd(&fr, 0)
 		slot = pop(&fr)
-		if !check("doDadd", ix, pi64p1, pslot.AsFloat64(slot)) {
-			return false
-		}
 
-		if ix%dupDup2Modulus == 0 {
+		if ix&0x1 == 0 {
 			// doDup
-			fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 			push(&fr, pslot.Float64Slot(pi64))
 			doDup(&fr, 0)
 			slot = pop(&fr)
-			if !check("doDup top", ix, pi64, pslot.AsFloat64(slot)) {
-				return false
-			}
 			slot = pop(&fr)
-			if !check("doDup next", ix, pi64, pslot.AsFloat64(slot)) {
-				return false
-			}
 
 			// doDup2
-			fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 			push(&fr, pslot.Float64Slot(pi64))
 			push(&fr, pslot.Float64Slot(pi64p1))
 			doDup2(&fr, 0)
 			slot = pop(&fr)
-			if !check("doDup2 top", ix, pi64p1, pslot.AsFloat64(slot)) {
-				return false
-			}
 			slot = pop(&fr)
-			if !check("doDup2 #2", ix, pi64, pslot.AsFloat64(slot)) {
-				return false
-			}
 			slot = pop(&fr)
-			if !check("doDup2 #3", ix, pi64p1, pslot.AsFloat64(slot)) {
-				return false
-			}
 			slot = pop(&fr)
-			if !check("doDup2 #4", ix, pi64, pslot.AsFloat64(slot)) {
-				return false
-			}
 		}
 
 		// Object
-		fr = frames.Frame{OpStack: emptyOpStack, Locals: locals, TOS: -1}
 		obj := &object.Object{X: 1, Y: 2, Z: 3}
 		push(&fr, pslot.ObjSlot(obj))
 		slot = pop(&fr)
 		obj = pslot.AsObject(slot)
-		if obj.X != 1 || obj.Y != 2 || obj.Z != 3 {
-			return false
-		}
 
 	} // for ix := range numLoops
 

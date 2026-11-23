@@ -30,9 +30,6 @@ func main() {
 	// Number of loops to execute
 	numLoops := -1
 
-	// DUP and DUP2 execute every numLoops mod dupDup2Modulus
-	dupDup2Modulus := -1
-
 	var Args []string
 	Args = append(Args, os.Args[1:]...)
 
@@ -41,8 +38,8 @@ func main() {
 		showHelp()
 	}
 
-	// Make sure that we have 2 command line arguments.
-	if len(Args) != 2 {
+	// Make sure that we have exactly 1 command line argument.
+	if len(Args) != 1 {
 		fmt.Printf("\nTwo command line arguments are required.\n")
 		showHelp()
 	}
@@ -58,22 +55,11 @@ func main() {
 		showHelp()
 	}
 
-	// Get dupDup2Modulus.
-	dupDup2Modulus, err = strconv.Atoi(Args[1])
-	if err != nil {
-		fmt.Printf("Invalid dupDup2Modulus: %s\n", Args[0])
-		showHelp()
-	}
-	if dupDup2Modulus < 1 {
-		fmt.Printf("dupDup2Modulus must be greater than zero\n")
-		showHelp()
-	}
-
 	// If running the current Jacobin model, do so now.
 	if flagCurrent {
 		fmt.Println("Current begin .....")
 		ti := time.Now()
-		success := current.Current(numLoops, dupDup2Modulus)
+		success := current.Current(numLoops)
 		tf := time.Now()
 		elapsed := tf.Sub(ti)
 		currentETsecs = float64(elapsed.Milliseconds()) / 1000.0
@@ -88,7 +74,7 @@ func main() {
 	if flagSlotty {
 		fmt.Println("Slotty begin .....")
 		ti := time.Now()
-		success := slotty.Slotty(numLoops, dupDup2Modulus)
+		success := slotty.Slotty(numLoops)
 		tf := time.Now()
 		elapsed := tf.Sub(ti)
 		slottyETsecs = float64(elapsed.Milliseconds()) / 1000.0
