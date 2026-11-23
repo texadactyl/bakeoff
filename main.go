@@ -17,9 +17,8 @@ var currentETsecs float64
 
 // Show help and then exit to the O/S
 func showHelp() {
-	fmt.Printf("\nUsage:  bakeoff  numLoops  dupDup2Modulus\n\nwhere\n")
-	fmt.Printf("\t* numLoops is the number of loops to perform.\n")
-	fmt.Printf("\t* DUP and DUP2 execute every numLoops mod the value of dupDup2Modulus.\n")
+	fmt.Printf("\nUsage:  bakeoff  numLoops\n\nwhere\n")
+	fmt.Printf("\tnumLoops is the number of loops to perform.\n")
 	fmt.Print("\n")
 	os.Exit(0)
 }
@@ -34,7 +33,7 @@ func main() {
 	Args = append(Args, os.Args[1:]...)
 
 	// If no options specified, just show help.
-	if Args[0] == "-h" {
+	if len(Args) < 1 || Args[0] == "-h" {
 		showHelp()
 	}
 
