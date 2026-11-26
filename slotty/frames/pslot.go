@@ -1,4 +1,4 @@
-package pslot
+package frames
 
 import (
 	"bakeoff/slotty/object"
@@ -23,5 +23,3 @@ func AsInt8(slot Slot) int8             { return int8(slot.Int) }
 func AsFloat64(slot Slot) float64       { return slot.Float }
 func AsFloat32(slot Slot) float32       { return float32(slot.Float) }
 func AsObject(slot Slot) *object.Object { return slot.Ref }
-
-
